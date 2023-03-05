@@ -36,7 +36,7 @@ class WorkerClockController extends Controller
 
         $attributes = $clockInWorkerRequest->all();
         $attributes['type'] = $this->workerClock::TYPE_IN;
-        $this->workerClock->create($clockInWorkerRequest->all());
+        $this->workerClock->create($attributes);
 
         return response()->json([
             'message' => 'success Clock in',
