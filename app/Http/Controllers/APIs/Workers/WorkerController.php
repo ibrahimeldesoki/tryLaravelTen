@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\Workers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\APIs\Workers\LoginWorkerRequest;
@@ -15,6 +15,9 @@ use Illuminate\Validation\ValidationException;
  */
 class WorkerController extends Controller
 {
+    /**
+     * @param User $user
+     */
     public function __construct(private User $user)
     {
     }
@@ -29,7 +32,7 @@ class WorkerController extends Controller
     {
         $user = $this->user->create($storeWorkerRequest->validated());
 
-        $userToken = $user->createToken('worker',['worker_access'])->plainTextToken;
+        $userToken = $user->createToken('worker', ['worker_access'])->plainTextToken;
 
         return response()->json([
             'message' => 'Worker created successfully',
@@ -44,11 +47,11 @@ class WorkerController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function login(LoginWorkerRequest $loginWorkerRequest) :JsonResponse
+    public function login(LoginWorkerRequest $loginWorkerRequest): JsonResponse
     {
         $user = User::where('email', $loginWorkerRequest->email)->first();
 
-        if (! $user || ! Hash::check($loginWorkerRequest->password, $user->password)) {
+        if (!$user || !Hash::check($loginWorkerRequest->password, $user->password)) {
             throw ValidationException::withMessages([
                 'message' => ['The provided credentials are incorrect.'],
             ]);
@@ -56,11 +59,11 @@ class WorkerController extends Controller
 
         $user->tokens()->delete();
 
-        $userToken = $user->createToken('worker',['worker_access'])->plainTextToken;
+        $userToken = $user->createToken('worker', ['worker_access'])->plainTextToken;
 
         return response()->json([
             'message' => "User login successfully",
             'token' => $userToken
-        ],200);
+        ], 200);
     }
 }

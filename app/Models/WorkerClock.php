@@ -11,6 +11,11 @@ class WorkerClock extends Model
 
     const TYPE_IN = 'in';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'worker_id',
         'time',
