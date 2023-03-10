@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\APIs\Workers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\APIs\Workers\ClockInsRequest;
 use App\Http\Requests\APIs\Workers\ClockInWorkerRequest;
+use App\Models\User;
 use App\Models\WorkerClock;
 use App\Utilities\DistanceUtil;
 use Illuminate\Http\JsonResponse;
@@ -40,6 +42,19 @@ class WorkerClockController extends Controller
 
         return response()->json([
             'message' => 'success Clock in',
+        ], 200);
+    }
+
+    public function index(ClockInsRequest $clockInsRequest): JsonResponse
+    {
+        $clockIns = $this->workerClock
+            ->select('id', 'worker_id', 'time')
+            ->with('user:id,name')
+            ->where('worker_id', $clockInsRequest->worker_id)
+            ->paginate(20);
+
+        return response()->json([
+            'clocks' => $clockIns,
         ], 200);
     }
 }

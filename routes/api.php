@@ -26,4 +26,5 @@ Route::post('/worker/login', [WorkerController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('worker/clock-in' , [WorkerClockController::class, 'store']);
+    Route::get('worker/clock-ins' , [WorkerClockController::class, 'index']);
 });
