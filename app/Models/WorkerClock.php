@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WorkerClock extends Model
 {
@@ -21,4 +22,13 @@ class WorkerClock extends Model
         'time',
         'type'
     ];
+
+    /**
+     * set relation with user model
+     * @return BelongsTo
+     */
+    public  function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'worker_id');
+    }
 }

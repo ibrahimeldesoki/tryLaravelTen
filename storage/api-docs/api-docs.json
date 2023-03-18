@@ -1,0 +1,221 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Bluworks",
+        "description": "This is my API",
+        "contact": {
+            "email": "ibrahim.eldesoki7@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/clock-in": {
+            "post": {
+                "tags": [
+                    "Clock-In"
+                ],
+                "summary": "Store a new clock-in for a worker.",
+                "description": "Store a new clock-in record for a worker based on the provided data in the request body.",
+                "operationId": "storeClockInWorker",
+                "requestBody": {
+                    "description": "The clock-in worker request body.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClockInWorkerRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success Clock in"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "outside permitted area"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/worker/clock-ins": {
+            "get": {
+                "tags": [
+                    "Worker Clock Ins"
+                ],
+                "summary": "Get clock ins by worker ID",
+                "description": "Get a list of clock ins for a worker by their ID",
+                "operationId": "67ac2698089c47c4dabd9b12ae4e4ea8",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "query",
+                        "description": "ID of the worker",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "clocks": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "worker_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "time": {
+                                                        "description": "UNIX timestamp of the clock-in time",
+                                                        "type": "integer",
+                                                        "example": 1647075063
+                                                    },
+                                                    "user": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Can not handle request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ClockInWorkerRequest": {
+                "title": "Clock-In Worker Request",
+                "description": "The request body for storing a new clock-in for a worker.",
+                "required": [
+                    "worker_id",
+                    "time",
+                    "latitude",
+                    "longitude"
+                ],
+                "properties": {
+                    "worker_id": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "time": {
+                        "type": "integer",
+                        "example": 1647072195
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "example": 40.7128
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "example": -74.006
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

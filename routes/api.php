@@ -17,13 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/worker/store', [WorkerController::class, 'store']);
 Route::post('/worker/login', [WorkerController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('worker/clock-in' , [WorkerClockController::class, 'store']);
+    Route::get('worker/clock-ins' , [WorkerClockController::class, 'index']);
 });
